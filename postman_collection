@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "183d115d-4ae0-4a74-94de-4b683ab39966",
+		"name": "apix-genericDb-sapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Update employee details",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "1234",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"emailid\": \"VINOOD@gmail.com\",\r\n  \"phoneNumber\": \"9496438192\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/api/employee/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"api",
+						"employee",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:8082/api/employee/2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "1234",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:8082/api/employee/11",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"employee",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Readyness",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "1234",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/ready",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"ready"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all employee details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/api/employee",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"api",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post employee details",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "1234",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"employeeId\": \"6\",\r\n  \"emailid\": \"jeyy@gmail.com\",\r\n  \"firstName\": \"jery\",\r\n  \"lastName\": \"joseph\",\r\n  \"phoneNumber\": \"9048378192\",\r\n  \"age\": 24\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/api/employee",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"api",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete employee details",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "1234",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/api/employee/4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"api",
+						"employee",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "live",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8082/apix-generic-db-sapi/v1/live",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"apix-generic-db-sapi",
+						"v1",
+						"live"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

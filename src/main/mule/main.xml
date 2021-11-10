@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="user-creation" doc:id="d1c39d3e-04a3-4d60-b9d7-472e2683d902" >
+		<json-logger:logger doc:id="c88afebe-da5e-4fec-8e4b-1fa719881519" message="Begning Logger" doc:name="Begning Logger" config-ref="jsonLoggerConfig"/>
+		<db:insert doc:name="inserting employee " doc:id="cfc202c5-c0c2-4652-9637-11b024e6b0e5" config-ref="databaseConfig">
+			<db:sql><![CDATA[INSERT INTO Employee (employeeId,firstName,lastName,phoneNumber,age,emailid) VALUES (:employeeId,:firstName,:lastName,:phoneNumber,:age,:emailid)]]></db:sql>
+			<db:input-parameters><![CDATA[#[{
+	"employeeId" : payload.employeeId,
+	"firstName" : payload.firstName,
+	"lastName" : payload.lastName,
+	"phoneNumber": payload.phoneNumber, 
+	"age" : payload.age,
+	"emailid" : payload.emailid
+}]]]></db:input-parameters>
+		</db:insert>
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	message:"Data inserted successfully"&#10;}]' doc:name='Success Message' doc:id="ce2f84a1-c1b3-4e86-94ff-b6638e7b9246" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="dbac140b-7c89-4b2d-bb38-23716113bb4d" message="Ending Logger" config-ref="jsonLoggerConfig" tracePoint="END"/>
+		<error-handler ref="apix-generic-db-sapi-main-error-error-handler" />
+	</flow>
+	<flow name="getting-all-user-details" doc:id="6b6c0bd1-2fbd-459c-a9fe-6c3932b1b2c0" >
+		<json-logger:logger doc:name="Begning Logger" doc:id="f81f412b-e2fa-475e-9c5c-6b9744234cde" message="Begning Logger" config-ref="jsonLoggerConfig"/>
+		<db:select doc:name="selecting all employee " doc:id="2da5d9f9-83d3-4646-9a39-e3f811b2ea4b" config-ref="databaseConfig">
+			<db:sql ><![CDATA[SELECT * FROM Employee]]></db:sql>
+		</db:select>
+		<set-payload value="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" doc:name="Payload to json" doc:id="87972cc7-947c-43f9-a58b-77ef4366c20d" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="63a70c94-8135-425b-9f26-d86b0dd91043" message="Ending Logger" config-ref="jsonLoggerConfig" tracePoint="END"/>
+		<error-handler ref="apix-generic-db-sapi-main-error-error-handler" />
+	</flow>
+	<flow name="getting-user-by-employee-id" doc:id="c08fe309-3d92-486f-aef4-c00b35949874" >
+		<json-logger:logger doc:name="Begning Logger" doc:id="ea2ab9d4-135b-4953-98e7-7be79ad8dfd8" message="Begning Logger" config-ref="jsonLoggerConfig"/>
+		<db:select doc:name="selecting an employee using employeeid" doc:id="b836854a-1cc6-44e6-9d93-847d017455a4" config-ref="databaseConfig">
+			<db:sql ><![CDATA[SELECT * FROM Employee where employeeId = :employeeId]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"employeeId" : attributes.uriParams.employeeId
+}]]]></db:input-parameters>
+		</db:select>
+		<set-payload value="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" doc:name="Payload to json" doc:id="5fa6666c-1474-41f3-b0fa-ddad2929c874" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="26fc45e8-ee8d-4976-9590-7b30388d217c" message="Ending Logger" config-ref="jsonLoggerConfig" tracePoint="END"/>
+		<error-handler ref="apix-generic-db-sapi-main-error-error-handler" />
+	</flow>
+	<flow name="deleting-user-from-employee-table" doc:id="03841026-bc35-4f4e-8508-af6f2fc2e5a7" >
+		<json-logger:logger doc:name="Begning Logger" doc:id="d6b78f08-a36c-40e1-b064-c15a9f3a3f42" message="Begning Logger" config-ref="jsonLoggerConfig"/>
+		<db:delete doc:name="deleting employee " doc:id="54fdc9b7-6834-4b4f-a293-7d26e583e901" config-ref="databaseConfig">
+			<db:sql ><![CDATA[DELETE FROM Employee where employeeId = :employeeId]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"employeeId" : attributes.uriParams.employeeId
+}]]]></db:input-parameters>
+		</db:delete>
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	message:"Data deleted successfully"&#10;}]' doc:name='Success Message' doc:id="699a2a95-38af-4929-9aea-1a7c848c6e4d" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="1b47b1c2-7f0d-4442-a8ef-d00fb5ace013" message="Ending Logger" config-ref="jsonLoggerConfig" tracePoint="END"/>
+		<error-handler ref="apix-generic-db-sapi-main-error-error-handler" />
+	</flow>
+	<flow doc:id="afb2bb2a-d70b-4ec5-94de-95af3d7d6381" name="updating-employee-details">
+		<json-logger:logger doc:name="Begning Logger" doc:id="83336a12-7c5a-4fef-af92-6313f20185ee" message="Begning Logger" config-ref="jsonLoggerConfig"/>
+		<db:update doc:name="updating employee " doc:id="bea57d8a-4ed1-440a-b00d-2cebbdcf922a" config-ref="databaseConfig">
+			<db:sql ><![CDATA[UPDATE Employee SET phoneNumber = :phoneNumber,emailid = :emailid WHERE employeeId = :employeeId]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"employeeId" : attributes.uriParams.employeeId,
+	"phoneNumber" : payload.phoneNumber,
+	"emailid" : payload.emailid
+}]]]></db:input-parameters>
+		</db:update>
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	message: "updated successfully"&#10;}]' doc:name='Success Message' doc:id="ab166cf6-4f16-4ef4-a267-c8e3ad520955" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="130d9de0-de43-4153-8454-06234a68d05a" message="Ending Logger" config-ref="jsonLoggerConfig" tracePoint="END"/>
+		<error-handler ref="apix-generic-db-sapi-main-error-error-handler" />
+	</flow>
+</mule>
